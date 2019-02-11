@@ -1,0 +1,195 @@
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">The Doge Company</a>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Sign out</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">
+              <span data-feather="home"></span>
+              Dashboard <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Pet Reports</span>
+          <a class="d-flex align-items-center text-muted" href="#">
+            <span data-feather="plus-circle"></span>
+          </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Current month
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Last quarter
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Social engagement
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Year-end sale
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <!--<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Dashboard</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+            <button class="btn btn-sm btn-outline-secondary">Share</button>
+            <button class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+          </button>
+        </div>
+      </div>
+
+      <canvas class="my-4" id="myChart" width="900" height="380"></canvas>-->
+
+      <h2>Pet Inventory Management</h2>
+      <ngb-tabset>
+        <ngb-tab title="Available Pets">
+          <ng-template ngbTabContent>
+            <br />
+            <div class="table-responsive" style="padding:5px">
+              <table datatable class="row-border hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let pet of availablePets">
+                    <td>{{pet.id}}</td>
+                    <td>{{pet.name}}</td>
+                    <td>{{(pet.category ? pet.category.name : "None")}}</td>
+                    <td><a href="*" class="btn btn-dark" (click)="updatePetStatus(pet)" onclick="return false;">Mark as Sold</a></td>
+                    <td><a href="*" class="btn btn-danger" (click)="updateDeletePet(pet)" onclick="return false;">Delete</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+          <ng-template ngbTabTitle> Sold Pets</ng-template>
+          <ng-template ngbTabContent>
+            <br />
+            <div class="table-responsive" style="padding:5px">
+              <table datatable class="row-border hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let pet of soldPets">
+                    <td>{{pet.id}}</td>
+                    <td>{{pet.name}}</td>
+                    <td>{{(pet.category ? pet.category.name : "None")}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+          <ng-template ngbTabTitle> Add a New Pet</ng-template>
+          <ng-template ngbTabContent>
+            <br />
+            <div class="form-row" style="width:100%">
+              <div style="width:50%; padding:10px">
+                <div class="form-group">
+                  <label for="txtPetName">Name</label>
+                  <input type="text" [(ngModel)]="currentPetModel.name" class="form-control" id="txtPetName" placeholder="Pet Name">
+                </div>
+              </div>
+              <div style="width:50%; padding:10px">
+                <div class="form-group">
+                  <label for="txtPetCategory">Category</label>
+                  <input type="text" [(ngModel)]="currentPetModel.category.name" class="form-control" id="txtPetCategory" placeholder="Category">
+                </div>
+              </div>
+            </div>
+            <div class="form-row" style="width:100%">
+              <div style="width:50%; padding:10px">
+                <div class="form-group">
+                  <label for="selectPhotoUrl">Photo URL</label>
+                  <div id="selectPhotoUrl" class="form-control">
+                    <ng-select [items]="[]"
+                               [addTag]="true"
+                               [(ngModel)]="currentPetModel.photoUrls"
+                               [multiple]="true">
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div style="width:50%; padding:10px">
+                <div class="form-group">
+                  <label for="PetTagSelector">Tags</label>
+                  <div id="PetTagSelector" class="form-control">
+                    <ng-select [items]="[]"
+                               [addTag]="true"
+                               [(ngModel)]="selectedTags"
+                               [multiple]="true">
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row" style="width:100%">
+              <div style="width:50%; padding:10px">
+                <div class="form-group">
+                  <label for="selectPetStatus">Status</label>
+                  <select id="selectPetStatus" [(ngModel)]="currentPetModel.status" class="form-control">
+                    <option value="available" selected>available</option>
+                    <option value="sold">sold</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-row" style="width:20%;padding:5px">
+              <a href="*" onclick="return false;" class="btn btn-primary form-control" (click)="saveCurrentPet()">Save this Pet</a>
+            </div>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+    </main>
+  </div>
+</div>
+<ngx-loading [show]="loading"></ngx-loading>
